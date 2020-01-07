@@ -23,10 +23,12 @@ import com.huawei.openstack4j.model.common.ActionResponse;
 import com.huawei.openstack4j.model.network.ext.LbPoolV2;
 import com.huawei.openstack4j.model.network.ext.LbPoolV2Update;
 import com.huawei.openstack4j.model.network.ext.MemberV2;
+import com.huawei.openstack4j.model.network.ext.MemberExV2;
 import com.huawei.openstack4j.model.network.ext.MemberV2Update;
 import com.huawei.openstack4j.openstack.compute.functions.ToActionResponseFunction;
 import com.huawei.openstack4j.openstack.networking.domain.ext.NeutronLbPoolV2;
 import com.huawei.openstack4j.openstack.networking.domain.ext.NeutronMemberV2;
+import com.huawei.openstack4j.openstack.networking.domain.ext.NeutronMemberExV2;
 import com.huawei.openstack4j.openstack.networking.internal.BaseNetworkingServices;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -109,6 +111,28 @@ public class LbPoolV2ServiceImpl extends BaseNetworkingServices implements LbPoo
     @Override
     public List<? extends MemberV2> listMembers(String lbPoolId, Map<String, String> filteringParams){
         Invocation<NeutronMemberV2.MembersV2> req = get(NeutronMemberV2.MembersV2.class, uri("/lbaas/pools/%s/members", lbPoolId));
+        if (filteringParams != null) {
+            for (Map.Entry<String, String> entry : filteringParams.entrySet()) {
+                req = req.param(entry.getKey(), entry.getValue());
+            }
+        }
+        return req.execute().getList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<? extends MemberExV2> listExMembers(String lbPoolId){
+        return get(NeutronMemberExV2.MembersExV2.class, uri("/lbaas/pools/%s/members",lbPoolId)).execute().getList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<? extends MemberExV2> listExMembers(String lbPoolId, Map<String, String> filteringParams){
+        Invocation<NeutronMemberExV2.MembersExV2> req = get(NeutronMemberExV2.MembersExV2.class, uri("/lbaas/pools/%s/members", lbPoolId));
         if (filteringParams != null) {
             for (Map.Entry<String, String> entry : filteringParams.entrySet()) {
                 req = req.param(entry.getKey(), entry.getValue());

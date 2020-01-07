@@ -23,6 +23,7 @@ import com.huawei.openstack4j.model.common.ActionResponse;
 import com.huawei.openstack4j.model.network.ext.LbPoolV2;
 import com.huawei.openstack4j.model.network.ext.LbPoolV2Update;
 import com.huawei.openstack4j.model.network.ext.MemberV2;
+import com.huawei.openstack4j.model.network.ext.MemberExV2;
 import com.huawei.openstack4j.model.network.ext.MemberV2Update;
 
 /**
@@ -101,6 +102,22 @@ public interface LbPoolV2Service extends RestService {
      */
     List<? extends MemberV2> listMembers(String lbPoolId, Map<String, String> filteringParams);
 
+    /**
+     * Returns list of ex-member filtered by parameters.
+     *
+     * @param lbPoolId the load balancer pool
+     * @return
+     */
+    List<? extends MemberExV2> listExMembers(String lbPoolId);
+
+    /**
+     * Returns list of ex-member filtered by parameters.
+     *
+     * @param lbPoolId the load balancer pool
+     * @param filteringParams map (name, value) of filtering parameters
+     * @return
+     */
+    List<? extends MemberExV2> listExMembers(String lbPoolId, Map<String, String> filteringParams);
 
     /**
      * Get the specified member by ID
