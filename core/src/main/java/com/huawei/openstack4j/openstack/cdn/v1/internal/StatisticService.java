@@ -18,14 +18,8 @@ package com.huawei.openstack4j.openstack.cdn.v1.internal;
 import java.util.List;
 
 import com.google.common.base.Preconditions;
-import com.huawei.openstack4j.openstack.cdn.v1.domain.Bandwidth;
-import com.huawei.openstack4j.openstack.cdn.v1.domain.BandwidthDetail;
-import com.huawei.openstack4j.openstack.cdn.v1.domain.DomainConsumption;
+import com.huawei.openstack4j.openstack.cdn.v1.domain.*;
 import com.huawei.openstack4j.openstack.cdn.v1.domain.DomainConsumption.DomainConsumptions;
-import com.huawei.openstack4j.openstack.cdn.v1.domain.DomainSummary;
-import com.huawei.openstack4j.openstack.cdn.v1.domain.DomainSummaryDetail;
-import com.huawei.openstack4j.openstack.cdn.v1.domain.Flux;
-import com.huawei.openstack4j.openstack.cdn.v1.domain.FluxDetail;
 import com.huawei.openstack4j.openstack.cdn.v1.exception.ServerCdnErrorResponseException;
 
 /**
@@ -273,6 +267,94 @@ public class StatisticService extends BaseCdnServices {
 			domainSummaryDetailsInvocation = domainSummaryDetailsInvocation.param("enterprise_project_id", enterpriseProjectId);
 		}
 		return domainSummaryDetailsInvocation.execute(this.buildExecutionOptions(DomainSummaryDetail.class));
+	}
+
+	/**
+	 * Querying Consumption Summary
+	 * @param domainName
+	 * @param statType
+	 * @return {@link DomainSummaryDouble} instance
+	 * @throws ServerCdnErrorResponseException
+	 */
+	public DomainSummaryDouble queryConsumptionSummaryDouble(String domainName, String statType, String enterpriseProjectId) throws ServerCdnErrorResponseException{
+		return queryConsumptionSummaryDouble(domainName,statType,null,null,null,enterpriseProjectId);
+	}
+
+	/**
+	 * Querying Consumption Summary
+	 * @param domainName
+	 * @param statType
+	 * @param startTime
+	 * @param endTime
+	 * @param serviceArea
+	 * @return {@link DomainSummaryDouble} instance
+	 * @throws ServerCdnErrorResponseException
+	 */
+	public DomainSummaryDouble queryConsumptionSummaryDouble(String domainName, String statType, Long startTime, Long endTime,
+												 String serviceArea, String enterpriseProjectId) throws ServerCdnErrorResponseException{
+		Preconditions.checkNotNull(domainName, "parameter `domainName` should not be null");
+		Preconditions.checkNotNull(statType, "parameter `statType` should not be null");
+		Invocation<DomainSummaryDouble> domainSummaryInvocation = get(DomainSummaryDouble.class,
+																uri("/statistics/domain-summary")).param("domain_name", domainName).param("stat_type", statType);
+		if (startTime != null) {
+			domainSummaryInvocation = domainSummaryInvocation.param("start_time", startTime);
+		}
+		if (endTime != null) {
+			domainSummaryInvocation = domainSummaryInvocation.param("end_time", endTime);
+		}
+		if (serviceArea != null) {
+			domainSummaryInvocation = domainSummaryInvocation.param("service_area", serviceArea);
+		}
+		if (enterpriseProjectId != null) {
+			domainSummaryInvocation = domainSummaryInvocation.param("enterprise_project_id", enterpriseProjectId);
+		}
+		return domainSummaryInvocation.execute(this.buildExecutionOptions(DomainSummaryDouble.class));
+	}
+
+	/**
+	 * Querying Consumption Details
+	 * @param domainName
+	 * @param statType
+	 * @return {@link DomainSummaryDoubleDetail} instance
+	 * @throws ServerCdnErrorResponseException
+	 */
+	public DomainSummaryDoubleDetail queryConsumptionSummaryDoubleDetails(String domainName, String statType, String enterpriseProjectId) throws ServerCdnErrorResponseException{
+		return queryConsumptionSummaryDoubleDetails(domainName,statType,null,null,null,null,enterpriseProjectId);
+	}
+
+	/**
+	 * Querying Consumption Details
+	 * @param domainName
+	 * @param statType
+	 * @param startTime
+	 * @param endTime
+	 * @param serviceArea
+	 * @param interval
+	 * @return {@link DomainSummaryDoubleDetail} instance
+	 * @throws ServerCdnErrorResponseException
+	 */
+	public DomainSummaryDoubleDetail queryConsumptionSummaryDoubleDetails(String domainName, String statType, Long startTime, Long endTime,
+																		  String serviceArea, Integer interval, String enterpriseProjectId) throws ServerCdnErrorResponseException{
+		Preconditions.checkNotNull(domainName, "parameter `domainName` should not be null");
+		Preconditions.checkNotNull(statType, "parameter `statType` should not be null");
+		Invocation<DomainSummaryDoubleDetail> domainSummaryDetailsInvocation = get(DomainSummaryDoubleDetail.class,
+																			 uri("/statistics/domain-summary-detail")).param("domain_name", domainName).param("stat_type", statType);
+		if (startTime != null) {
+			domainSummaryDetailsInvocation = domainSummaryDetailsInvocation.param("start_time", startTime);
+		}
+		if (endTime != null) {
+			domainSummaryDetailsInvocation = domainSummaryDetailsInvocation.param("end_time", endTime);
+		}
+		if (serviceArea != null) {
+			domainSummaryDetailsInvocation = domainSummaryDetailsInvocation.param("service_area", serviceArea);
+		}
+		if (interval != null) {
+			domainSummaryDetailsInvocation = domainSummaryDetailsInvocation.param("interval", interval);
+		}
+		if (enterpriseProjectId != null) {
+			domainSummaryDetailsInvocation = domainSummaryDetailsInvocation.param("enterprise_project_id", enterpriseProjectId);
+		}
+		return domainSummaryDetailsInvocation.execute(this.buildExecutionOptions(DomainSummaryDoubleDetail.class));
 	}
 
 	/**
